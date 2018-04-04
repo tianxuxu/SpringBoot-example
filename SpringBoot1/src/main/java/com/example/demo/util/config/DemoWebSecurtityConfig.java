@@ -1,22 +1,16 @@
 package com.example.demo.util.config;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.config.annotation.web.servlet.configuration.EnableWebMvcSecurity;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
-import com.example.demo.service.security.CustomUserService;
+import com.example.demo.service.security.impl.CustomUserServiceImpl;
+
+
 
 /**
  * 配置spring security
@@ -35,7 +29,7 @@ import com.example.demo.service.security.CustomUserService;
 // SpringSecurity配置
 
 /*
- * 1.通过 @EnableWebSecurity注解开启Spring
+ * 默认的只有一个User用户和随机 密码 1.通过 @EnableWebSecurity注解开启Spring
  * Security的功能。使用@EnableGlobalMethodSecurity(prePostEnabled =
  * true)这个注解，可以开启security的注解，我们可以在需要控制权限的方法上面使用@PreAuthorize，@PreFilter这些注解。
  * 
@@ -47,24 +41,29 @@ import com.example.demo.service.security.CustomUserService;
  * 链接：https://www.jianshu.com/p/08cc28921fd0 來源：简书
  * 著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
  * （1）覆盖写userDetailsService方法，具体的LightSwordUserDetailService实现类，我们下面紧接着会讲。
-
-（2）默认不拦截静态资源的url pattern。我们也可以用下面的WebSecurity这个方式跳过静态资源的认证
+ * 
+ * （2）默认不拦截静态资源的url pattern。我们也可以用下面的WebSecurity这个方式跳过静态资源的认证
+ * 
+ * 提供的常见底层特性被打开HSTS XSS CSRF 缓存
  */
 @Configuration
-//@EnableWebSecurity   //会对静态资源进行拦截 只有拥有权限后才会放开
-@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true, jsr250Enabled = true)
+// @Order(SecurityProperties.ACCESS_OVERIED_OERDER)//只覆盖应用访问规则
+// @Order(ManagementServerProperties.ACCESS_OVERRIDE_ORDER)//只覆盖actuator访问规则
+// @EnableWebSecurity //会对静态资源进行拦截 只有拥有权限后才会放开 关掉Spring的默认安全配置
+@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true, jsr250Enabled = true) // 添加方法级别的保护
 public class DemoWebSecurtityConfig extends WebSecurityConfigurerAdapter {
-
+	// 可以使用基于表单的验证
+	// 熟悉默认配置 ApplicationEventPubilsher
 	// 需要重写并覆盖该方法
 	@Bean
 	UserDetailsService customUserService() {
-		return new CustomUserService();
+		return new CustomUserServiceImpl();
 	}
 
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 		// TODO Auto-generated method stub
-		//manger使用我们自己的service来获取用户信息
+		// manger使用我们自己的service来获取用户信息
 		auth.userDetailsService(customUserService());
 		// auth.inMemoryAuthentication().withUser("root").password("root").roles("User").and().withUser("admin")
 		// .password("admin").roles("ADMIN",
@@ -77,26 +76,25 @@ public class DemoWebSecurtityConfig extends WebSecurityConfigurerAdapter {
 
 		// super.configure(http);
 
-		 http.authorizeRequests().anyRequest().authenticated().and()
-		 .formLogin().loginPage("/login").failureUrl("/login?error").permitAll()
-		 .and().logout().permitAll();
+		http.authorizeRequests().anyRequest().authenticated().and().formLogin().loginPage("/login")
+				.failureUrl("/login?error").permitAll().and().logout().permitAll();
 
-//		http.csrf().disable();
-//		http.authorizeRequests().antMatchers("/").permitAll()
-//		//.antMatchers("/1","/2").permitAll()//默认不拦截静态资源  和下面方法同理
-//		.anyRequest().authenticated().and()
-//		.formLogin().loginPage("/login")
-//		.defaultSuccessUrl("/httpapi").permitAll().and()
-//		.logout().permitAll();
-//		
-//		http.logout().logoutSuccessUrl("/");//退出默认跳转页面
+		// http.csrf().disable();
+		// http.authorizeRequests().antMatchers("/").permitAll()
+		// //.antMatchers("/1","/2").permitAll()//默认不拦截静态资源 和下面方法同理
+		// .anyRequest().authenticated().and()
+		// .formLogin().loginPage("/login")
+		// .defaultSuccessUrl("/httpapi").permitAll().and()
+		// .logout().permitAll();
+		//
+		// http.logout().logoutSuccessUrl("/");//退出默认跳转页面
 	}
 
-//	public void configure(WebSecurity web) throws Exception {
-//	    web
-//	        .ignoring()
-//	        .antMatchers("/resources/**");
-//	}
+	// public void configure(WebSecurity web) throws Exception {
+	// web
+	// .ignoring()
+	// .antMatchers("/resources/**");
+	// }
 }
 
 /*

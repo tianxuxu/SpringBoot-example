@@ -9,11 +9,9 @@ import org.mybatis.generator.config.Configuration;
 import org.mybatis.generator.config.xml.ConfigurationParser;
 import org.mybatis.generator.internal.DefaultShellCallback;
 
-
-
-
 /**
- * generator生成脚本   好处方便快捷
+ * generator生成脚本 好处方便快捷
+ * 
  * @author tianxuxu
  *
  */

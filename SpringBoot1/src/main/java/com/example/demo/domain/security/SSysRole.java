@@ -4,34 +4,33 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
-
 /**
  * 角色实体类和表都很简单
+ * 
  * @author tianxuxu
  *
  */
 
 @Entity
 public class SSysRole {
-    @Id
-    @GeneratedValue
-    private Long id;
-    private String name;
+	@Id
+	@GeneratedValue
+	private Long id;
+	private String name;
 
+	public Long getId() {
+		return id;
+	}
 
-    public Long getId() {
-        return id;
-    }
+	public void setId(Long id) {
+		this.id = id;
+	}
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
 }

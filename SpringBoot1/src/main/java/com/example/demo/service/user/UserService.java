@@ -4,8 +4,6 @@ import java.util.List;
 
 import com.example.demo.pojo.SysUser;
 
-
-
 public interface UserService {
 
 	public void saveUser(SysUser user) throws Exception;
@@ -21,6 +19,6 @@ public interface UserService {
 	public List<SysUser> queryUserListPaged(SysUser user, Integer page, Integer pageSize);
 
 	public SysUser queryUserByIdCustom(String userId);
-	
+
 	public void saveUserTransactional(SysUser user);
 }

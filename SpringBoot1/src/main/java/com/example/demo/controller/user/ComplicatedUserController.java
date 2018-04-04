@@ -13,10 +13,9 @@ import com.example.demo.pojo.SysUser;
 import com.example.demo.service.user.UserService;
 import com.example.demo.util.json.JsonResult;
 
-
 /**
- * 完成一些复杂的sql查询  这些都是测试所用的接口
- * 完成了实现  不过自己还没有验证
+ * 完成一些复杂的sql查询 这些都是测试所用的接口 完成了实现 不过自己还没有验证
+ * 
  * @author tianxuxu
  *
  */
@@ -26,32 +25,32 @@ import com.example.demo.util.json.JsonResult;
 public class ComplicatedUserController {
 
 	@Autowired
-	private UserService  userService;
-	
+	private UserService userService;
+
 	/*
 	 * 按照指定模板模糊查询
-	 * */
-	public List<SysUser> queryUserList(SysUser user){
+	 */
+	public List<SysUser> queryUserList(SysUser user) {
 		return userService.queryUserList(user);
 	}
 
-	public JsonResult queryUserListPaged(){
-		int page=1;
-		int pageSize=10;
-		SysUser user=new SysUser();
+	public JsonResult queryUserListPaged() {
+		int page = 1;
+		int pageSize = 10;
+		SysUser user = new SysUser();
 		user.setNickname("demo");
-			
+
 		return new JsonResult().ok(userService.queryUserListPaged(user, page, pageSize));
 	}
- 
-	//定制查询没有实现
+
+	// 定制查询没有实现
 	@GetMapping("/queryUserByIdCustom")
-	public JsonResult queryUserByIdCustom(@RequestParam ("userId")String userId) {
-	     
-	     return new JsonResult().ok(userService.queryUserByIdCustom(userId));
+	public JsonResult queryUserByIdCustom(@RequestParam("userId") String userId) {
+
+		return new JsonResult().ok(userService.queryUserByIdCustom(userId));
 	}
-	
-	//体现事务下的保存
+
+	// 体现事务下的保存
 	@GetMapping("saveUserTransactional")
 	public JsonResult saveUserTransactional() {
 		SysUser user = new SysUser();
@@ -62,9 +61,8 @@ public class ComplicatedUserController {
 		user.setIsDelete(0);
 		user.setRegistTime(new Date());
 		userService.saveUserTransactional(user);
-		
+
 		return new JsonResult().ok("保存成功");
 	}
-	
-	
+
 }

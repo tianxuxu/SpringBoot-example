@@ -68,73 +68,70 @@ public class UserServiceImpl implements UserService {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-		
-		
+
 		return sysUserMapper.selectByPrimaryKey(userId);
 	}
-	
-	
-	
-	//=================================复杂的sql语句
+
+	// =================================复杂的sql语句
 
 	/**
-	 * 模糊指定条件查询  前后模糊
+	 * 模糊指定条件查询 前后模糊
 	 */
 	@Transactional(propagation = Propagation.SUPPORTS)
 	public List<SysUser> queryUserList(SysUser user) {
 		// TODO Auto-generated method stub
-			
+
 		try {
 			Thread.sleep(1000);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-		//通用的查询对象
+		// 通用的查询对象
 		Example example = new Example(SysUser.class);
 		Example.Criteria criteria = example.createCriteria();
-		
-		//如果用户名为非null
+
+		// 如果用户名为非null
 		if (!StringUtils.isEmptyOrWhitespace(user.getUsername())) {
-//			criteria.andEqualTo("username", user.getUsername());
+			// criteria.andEqualTo("username", user.getUsername());
 			criteria.andLike("username", "%" + user.getUsername() + "%");
 		}
-		//用户昵称为非null
+		// 用户昵称为非null
 		if (!StringUtils.isEmptyOrWhitespace(user.getNickname())) {
 			criteria.andLike("nickname", "%" + user.getNickname() + "%");
 		}
-		
+
 		List<SysUser> userList = sysUserMapper.selectByExample(example);
-		
+
 		return userList;
-	
+
 	}
 
 	/*
-	 * 分页查询   指定分页大小  数目
+	 * 分页查询 指定分页大小 数目
 	 * 
-	 * */
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS)
 	public List<SysUser> queryUserListPaged(SysUser user, Integer page, Integer pageSize) {
 		// TODO Auto-generated method stub
 		// 开始分页
-        PageHelper.startPage(page, pageSize);
-		
+		PageHelper.startPage(page, pageSize);
+
 		Example example = new Example(SysUser.class);
 		Example.Criteria criteria = example.createCriteria();
-		
+
 		if (!StringUtils.isEmptyOrWhitespace(user.getNickname())) {
 			criteria.andLike("nickname", "%" + user.getNickname() + "%");
 		}
-		//排序
+		// 排序
 		example.orderBy("registTime").desc();
 		List<SysUser> userList = sysUserMapper.selectByExample(example);
-		
+
 		return userList;
 	}
 
 	@Override
-	//没有实现定制化
+	// 没有实现定制化
 	@Transactional(propagation = Propagation.SUPPORTS)
 	public SysUser queryUserByIdCustom(String userId) {
 		// TODO Auto-generated method stub
@@ -142,7 +139,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	//查看异常情况下是否会回滚
+	// 查看异常情况下是否会回滚
 	@Transactional(propagation = Propagation.REQUIRED)
 	public void saveUserTransactional(SysUser user) {
 		// TODO Auto-generated method stub

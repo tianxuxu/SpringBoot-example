@@ -11,32 +11,36 @@
 
 
 <generatorConfiguration>
-    <context id="MysqlContext" targetRuntime="MyBatis3Simple" defaultModelType="flat">
-        <property name="beginningDelimiter" value="`"/>
-        <property name="endingDelimiter" value="`"/>
+	<context id="MysqlContext" targetRuntime="MyBatis3Simple"
+		defaultModelType="flat">
+		<property name="beginningDelimiter" value="`" />
+		<property name="endingDelimiter" value="`" />
 
-        <plugin type="tk.mybatis.mapper.generator.MapperPlugin">
-            <property name="mappers" value="com.example.demo.util.mybatis.MyMapper"/>
-        </plugin>
+		<plugin type="tk.mybatis.mapper.generator.MapperPlugin">
+			<property name="mappers"
+				value="com.example.demo.util.mybatis.MyMapper" />
+		</plugin>
 
-        <jdbcConnection driverClass="com.mysql.jdbc.Driver"
-                        connectionURL="jdbc:mysql://localhost:3306/leecx"
-                        userId="root"
-                        password="">
-        </jdbcConnection>
+		<jdbcConnection driverClass="com.mysql.jdbc.Driver"
+			connectionURL="jdbc:mysql://localhost:3306/leecx" userId="root"
+			password="">
+		</jdbcConnection>
 
-        <!-- 对于生成的pojo所在包 -->
-        <javaModelGenerator targetPackage="com.example.demo.pojo" targetProject="src/main/java"/>
+		<!-- 对于生成的pojo所在包 -->
+		<javaModelGenerator
+			targetPackage="com.example.demo.pojo" targetProject="src/main/java" />
 
 		<!-- 对于生成的mapper所在目录 -->
-        <sqlMapGenerator targetPackage="mapper" targetProject="src/main/resources"/>
+		<sqlMapGenerator targetPackage="mapper"
+			targetProject="src/main/resources" />
 
 		<!-- 配置mapper对应的java映射 -->
-        <javaClientGenerator targetPackage="com.example.demo.mapper" targetProject="src/main/java"
-                             type="XMLMAPPER"/>
+		<javaClientGenerator
+			targetPackage="com.example.demo.mapper" targetProject="src/main/java"
+			type="XMLMAPPER" />
 
 
 		<table tableName="sys_user"></table>
-		 
-    </context>
+
+	</context>
 </generatorConfiguration>

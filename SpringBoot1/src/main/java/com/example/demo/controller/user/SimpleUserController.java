@@ -14,6 +14,7 @@ import com.example.demo.util.json.JsonResult;
 
 /**
  * 作用体现Mybatis 简单的操作不需要自己去实现
+ * 
  * @author tianxuxu
  *
  */
@@ -21,16 +22,14 @@ import com.example.demo.util.json.JsonResult;
 @RequestMapping("/simpleUsers")
 public class SimpleUserController {
 
-	
 	@Autowired
-	private UserService  userService;
-	
-	private String userId="123456";
-	
-	
+	private UserService userService;
+
+	private String userId = "123456";
+
 	@GetMapping("/c")
-	public JsonResult saveUser() throws Exception{
-		SysUser user=new SysUser();
+	public JsonResult saveUser() throws Exception {
+		SysUser user = new SysUser();
 		user.setId(userId);
 		user.setUsername("demo" + new Date());
 		user.setNickname("demo" + new Date());
@@ -43,23 +42,23 @@ public class SimpleUserController {
 
 	@GetMapping("/u")
 	public JsonResult updateUser() {
-		SysUser  sysUser=userService.queryUserById(userId);
-		sysUser.setUsername("fuck"+new Date());
+		SysUser sysUser = userService.queryUserById(userId);
+		sysUser.setUsername("fuck" + new Date());
 		userService.updateUser(sysUser);
-		return  new JsonResult().ok("更新成功");
+		return new JsonResult().ok("更新成功");
 	}
 
 	@GetMapping("/d")
 	public JsonResult deleteUser() {
 		userService.deleteUser(userId);
-		return  new JsonResult().ok("删除成功");
+		return new JsonResult().ok("删除成功");
 	}
 
-	//失败的方法
+	// 失败的方法
 	@GetMapping("/r")
 	public JsonResult queryUserById() {
-		SysUser  sysUser=userService.queryUserById(userId);
-		return  new JsonResult().ok(sysUser);
+		SysUser sysUser = userService.queryUserById(userId);
+		return new JsonResult().ok(sysUser);
 	}
-	
+
 }
